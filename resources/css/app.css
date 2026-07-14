@@ -1,0 +1,51 @@
+@import 'tailwindcss';
+
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    /* 外部フォントに依存しないフォールバック前提のフォントスタック */
+    --font-sans: 'Inter', 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans',
+        'Noto Sans JP', 'Yu Gothic UI', Meiryo, system-ui, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Noto Color Emoji';
+
+    /* BuildOne ブランドカラー */
+    --color-brand: #2563eb;
+    --color-brand-dark: #1d4ed8;
+    --color-ink: #0f172a;
+    --color-accent: #22c55e;
+    --color-surface: #f8fafc;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+body {
+    text-wrap: pretty;
+}
+
+h1,
+h2,
+h3 {
+    text-wrap: balance;
+}
+
+/* キーボード操作時のフォーカスを明確に */
+:focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 2px;
+}
