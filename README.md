@@ -1,58 +1,91 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BuildOne 公式サイト
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**社長、そのシステム作れます。** — AIで会社の業務システムを1週間で開発・公開。
 
-## About Laravel
+BuildOneは、AIを活用して企業で本当に使える業務システムを企画・設計・開発・検証し、その過程をYouTube（@buildonejp）で公開するプロジェクトです。このリポジトリはその公式サイト（ショールーム型LP）です。
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- 本番URL: https://buildone.sakura.ne.jp
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 技術構成
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| 項目 | 内容 |
+|---|---|
+| フレームワーク | Laravel 13（PHP 8.3） |
+| フロントエンド | Blade + Tailwind CSS 4 + Vite 8 |
+| データベース | 不使用（セッション・キャッシュはファイル駆動） |
+| 本番サーバー | さくらのレンタルサーバー（FreeBSD / PHP 8.3.31） |
+| デプロイ | rsync over SSH（WSLから `deploy/deploy.sh`） |
 
-## Learning Laravel
+必要バージョン: PHP 8.3+ / Node.js 20+（開発は Node 24 で確認）/ Composer 2
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## ローカル開発
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+composer install
+npm install
+cp .env.example .env
+php artisan key:generate
+npm run dev          # 別ターミナルで
+php artisan serve
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## ビルド
 
-## Contributing
+```bash
+npm run build        # public/build に成果物を出力（Git管理外）
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## テスト
 
-## Code of Conduct
+```bash
+php artisan test     # Feature Test 14件
+./vendor/bin/pint    # コードフォーマット
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 環境変数（BuildOne固有）
 
-## Security Vulnerabilities
+| 変数 | 効果 |
+|---|---|
+| `BUILDONE_YOUTUBE_URL` | 設定すると「YouTubeを見る」ボタン等がチャンネルへリンクする。未設定なら「チャンネル準備中」表示 |
+| `BUILDONE_YOUTUBE_VIDEO_URL` | 設定するとトップに動画を埋め込む。未設定なら「動画は近日公開」表示 |
+| `CONTACT_URL` | 問い合わせフォームのURL。設定すると問い合わせボタンが有効化 |
+| `CONTACT_EMAIL` | 問い合わせメールアドレス。`CONTACT_URL` 未設定時に使われる |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+本番で変更する場合はサーバーの `~/buildone-web/.env` を編集し、`php artisan config:cache` を実行する。
 
-## License
+コンテンツ（システム一覧・特徴・開発の流れ）は `config/buildone.php` の配列で管理。詳細は [docs/content-guide.md](docs/content-guide.md)。
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## デプロイ
+
+```bash
+# WSL (Ubuntu) から実行
+cd /mnt/c/dev/buildone-web
+bash deploy/deploy.sh          # 通常デプロイ
+bash deploy/deploy.sh --first  # 初回のみ（メンテナンスモードを使わない）
+```
+
+デプロイ後、ローカルで開発を続けるときは `composer install` で dev 依存を戻すこと。
+手順の詳細・サーバー構成は [docs/deployment.md](docs/deployment.md)。
+
+## ロールバック
+
+このサイトは静的コンテンツ中心のため、**直前のコミットに戻して再デプロイ**するのが基本手順:
+
+```bash
+git log --oneline            # 戻したいコミットを確認
+git checkout <commit> -- .   # または git revert
+bash deploy/deploy.sh
+```
+
+サーバー側だけの緊急停止はメンテナンスモードで行う:
+
+```bash
+ssh buildone "cd ~/buildone-web && php artisan down"
+ssh buildone "cd ~/buildone-web && php artisan up"
+```
+
+## ドキュメント
+
+- [docs/deployment.md](docs/deployment.md) — さくらのサーバーへのデプロイ手順
+- [docs/server-audit.md](docs/server-audit.md) — サーバー環境の調査結果
+- [docs/content-guide.md](docs/content-guide.md) — コンテンツの追加・変更ガイド
