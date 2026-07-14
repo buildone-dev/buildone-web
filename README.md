@@ -80,8 +80,8 @@ bash deploy/deploy.sh
 サーバー側だけの緊急停止はメンテナンスモードで行う:
 
 ```bash
-ssh buildone "cd ~/buildone-web && php artisan down"
-ssh buildone "cd ~/buildone-web && php artisan up"
+ssh buildone-sakura "cd ~/buildone-web && php artisan down"
+ssh buildone-sakura "cd ~/buildone-web && php artisan up"
 ```
 
 ## ドキュメント

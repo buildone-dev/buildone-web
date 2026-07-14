@@ -25,7 +25,7 @@
 ## 前提（デプロイ元マシン）
 
 - Windows + WSL (Ubuntu)。rsync は WSL 側のものを使う
-- WSL の `~/.ssh/config` に `Host buildone` が設定済み（鍵は `~/.ssh/buildone_sakura`、パーミッション600）
+- WSL の `~/.ssh/config` に `Host buildone-sakura` が設定済み（鍵は `~/.ssh/buildone_sakura`、パーミッション600）
 - Windows 側に PHP 8.3 / Composer / Node.js（ビルドは cmd.exe 経由で実行される）
 
 ## 通常デプロイ
@@ -52,7 +52,7 @@ bash deploy/deploy.sh
 1. サーバーの PHP を 8.3 に設定（`~/.php.version` に `8.3`。コントロールパネルの「PHPのバージョン選択」でも可）
 2. 本番 `.env` を `~/buildone-web/.env` に作成（`APP_ENV=production` / `APP_DEBUG=false` / `APP_URL=https://buildone.sakura.ne.jp`、権限600）
 3. `bash deploy/deploy.sh --first`
-4. `ssh buildone "cd ~/buildone-web && php artisan key:generate --force && php artisan config:cache"`
+4. `ssh buildone-sakura "cd ~/buildone-web && php artisan key:generate --force && php artisan config:cache"`
 
 ## デプロイ後の確認
 
@@ -61,7 +61,7 @@ curl -I https://buildone.sakura.ne.jp/          # 200 + セキュリティヘッ
 curl -I http://buildone.sakura.ne.jp/           # 302 → https
 curl -o /dev/null -w "%{http_code}\n" https://buildone.sakura.ne.jp/.env        # 403
 curl -o /dev/null -w "%{http_code}\n" https://buildone.sakura.ne.jp/composer.json  # 404
-ssh buildone "tail ~/buildone-web/storage/logs/laravel-$(date +%F).log"         # エラーが無いこと
+ssh buildone-sakura "tail ~/buildone-web/storage/logs/laravel-$(date +%F).log"         # エラーが無いこと
 ```
 
 ## トラブルシューティング
@@ -71,5 +71,5 @@ ssh buildone "tail ~/buildone-web/storage/logs/laravel-$(date +%F).log"         
 | 500 + ログに "No application encryption key" | `.env` の `APP_KEY` が空。`php artisan key:generate --force && php artisan config:cache` |
 | 設定変更が反映されない | config がキャッシュされている。`php artisan config:cache` を再実行 |
 | CSS/JSが404 | `~/www/build/` が古い。ローカルで `npm run build` して再デプロイ |
-| rsync が無反応でハングする | WSL の known_hosts にホスト鍵が無い。`ssh buildone whoami` を一度手動実行して鍵を受け入れる |
+| rsync が無反応でハングする | WSL の known_hosts にホスト鍵が無い。`ssh buildone-sakura whoami` を一度手動実行して鍵を受け入れる |
 | サーバーのシェルは csh | `2>/dev/null` 等の bash 構文は使えない点に注意 |

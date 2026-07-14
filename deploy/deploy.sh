@@ -6,14 +6,14 @@
 #            bash deploy/deploy.sh --first  # 初回デプロイ（メンテナンスモードを使わない）
 #
 # 前提:
-#   - WSL の ~/.ssh/config に Host "buildone" が設定済み
+#   - WSL の ~/.ssh/config に Host "buildone-sakura" が設定済み
 #   - 本番の .env はサーバー側にのみ存在し、このスクリプトは触らない
 #   - デプロイ後、ローカルで開発を続けるときは `composer install` で
 #     dev依存(phpunit等)を戻すこと
 #
 set -euo pipefail
 
-HOST=buildone
+HOST=buildone-sakura
 APP_REMOTE='~/buildone-web'   # Laravel本体（Web非公開）
 WEB_REMOTE='~/www'            # 公開ディレクトリ（publicの中身）
 LOCAL_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
