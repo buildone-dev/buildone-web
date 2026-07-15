@@ -9,6 +9,8 @@ use App\Features\Time\Models\Employee;
 use App\Features\Time\Models\TimeRecord;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
@@ -27,6 +29,44 @@ final class TimeRecordController extends Controller
             'employeeCount' => Employee::query()->where('is_active', true)->count(),
             'todayHours' => intdiv($todayMinutes, 60).'時間'.($todayMinutes % 60).'分',
             'records' => TimeRecord::query()->with('employee')->latest('clock_in')->paginate(20),
+        ]);
+    }
+
+    public function monthly(): View
+    {
+        Gate::authorize(Permission::TimeView->value);
+
+        $month = (string) request('month', today()->format('Y-m'));
+        if (preg_match('/^\d{4}-\d{2}$/', $month) !== 1) {
+            $month = today()->format('Y-m');
+        }
+
+        $start = Carbon::createFromFormat('Y-m-d', $month.'-01')->startOfMonth();
+        $end = $start->copy()->endOfMonth();
+
+        $aggregates = DB::table('time_records')
+            ->whereBetween('clock_in', [$start, $end])
+            ->whereNotNull('worked_minutes')
+            ->selectRaw('employee_id, COUNT(*) as day_count, SUM(worked_minutes) as total_minutes')
+            ->groupBy('employee_id')
+            ->get();
+
+        $employees = Employee::query()->whereIn('id', $aggregates->pluck('employee_id'))->pluck('name', 'id');
+
+        $rows = $aggregates
+            ->map(static fn ($row): array => [
+                'name' => $employees[$row->employee_id] ?? '—',
+                'days' => (int) $row->day_count,
+                'minutes' => (int) $row->total_minutes,
+            ])
+            ->sortByDesc('minutes')
+            ->values()
+            ->all();
+
+        return view('time::monthly', [
+            'month' => $month,
+            'rows' => $rows,
+            'totalMinutes' => array_sum(array_column($rows, 'minutes')),
         ]);
     }
 

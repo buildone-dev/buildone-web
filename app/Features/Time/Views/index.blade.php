@@ -4,6 +4,7 @@
         <div class="mt-2 flex flex-wrap items-center justify-between gap-3">
             <h2 class="text-2xl font-bold tracking-tight text-ink">勤怠一覧</h2>
             <div class="flex gap-2">
+                <x-link-button :href="route('time.monthly')" variant="secondary" size="sm">月次集計</x-link-button>
                 <x-link-button :href="route('time.kiosk')" variant="secondary" size="sm">打刻画面へ</x-link-button>
                 <x-link-button :href="route('time.export')" size="sm">CSV出力</x-link-button>
             </div>

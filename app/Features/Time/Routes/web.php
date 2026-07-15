@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->prefix('admin/time')->name('time.')->group(function (): void {
     Route::get('/', [TimeRecordController::class, 'index'])->name('index');
+    Route::get('/monthly', [TimeRecordController::class, 'monthly'])->name('monthly');
     Route::get('/export', [TimeRecordController::class, 'export'])->name('export');
 
     Route::get('/kiosk', [TimeClockController::class, 'show'])->name('kiosk');

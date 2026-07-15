@@ -74,6 +74,21 @@ it('閲覧権限では従業員登録画面を開けない', function (): void {
         ->assertForbidden();
 });
 
+it('月次集計に従業員別の勤務時間が表示される', function (): void {
+    $employee = Employee::factory()->create(['name' => '田中 太郎']);
+    TimeRecord::factory()->for($employee)->create([
+        'clock_in' => today()->startOfMonth()->setTime(9, 0),
+        'clock_out' => today()->startOfMonth()->setTime(17, 0),
+        'worked_minutes' => 480,
+    ]);
+
+    actingAs(makeUserWith([Permission::TimeView->value]))
+        ->get('/admin/time/monthly?month='.today()->format('Y-m'))
+        ->assertOk()
+        ->assertSee('月次勤怠集計')
+        ->assertSee('田中 太郎');
+});
+
 it('CSVを出力できる', function (): void {
     TimeRecord::factory()->create();
 
