@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+namespace __NAMESPACE__;
+
+use App\Infrastructure\Modules\ModuleServiceProvider;
+
+final class __MODULE__ServiceProvider extends ModuleServiceProvider
+{
+    protected function name(): string
+    {
+        return '__MODULE_LOWER__';
+    }
+
+    // 永続化の差し替えや複雑な境界が必要になったら bindings() で
+    // Repository 契約 → 実装 を束ねる（App\Domain\Contracts\Repository を参照）。
+}

@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace __NAMESPACE__\Database\Factories;
+
+use __NAMESPACE__\Models\__MODULE__;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends Factory<__MODULE__>
+ */
+final class __MODULE__Factory extends Factory
+{
+    /**
+     * @var class-string<__MODULE__>
+     */
+    protected $model = __MODULE__::class;
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'name' => fake()->words(3, true),
+        ];
+    }
+}

@@ -1,0 +1,19 @@
+<?php
+
+declare(strict_types=1);
+
+namespace __NAMESPACE__\Http\Controllers;
+
+use __NAMESPACE__\Models\__MODULE__;
+use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
+
+final class __MODULE__Controller extends Controller
+{
+    public function index(): View
+    {
+        return view('__MODULE_LOWER__::index', [
+            'items' => __MODULE__::query()->latest()->get(),
+        ]);
+    }
+}

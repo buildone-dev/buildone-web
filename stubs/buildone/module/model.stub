@@ -1,0 +1,32 @@
+<?php
+
+declare(strict_types=1);
+
+namespace __NAMESPACE__\Models;
+
+use __NAMESPACE__\Database\Factories\__MODULE__Factory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class __MODULE__ extends Model
+{
+    /** @use HasFactory<__MODULE__Factory> */
+    use HasFactory;
+
+    /**
+     * @var string
+     */
+    protected $table = '__TABLE__';
+
+    /**
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+    ];
+
+    protected static function newFactory(): __MODULE__Factory
+    {
+        return __MODULE__Factory::new();
+    }
+}

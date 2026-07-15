@@ -1,5 +1,20 @@
 # BuildOne 開発ルールブック（CLAUDE.md）
 
+> **最優先の設計基準**: `prompts/framework-foundation-build.md`（決定版）と `docs/framework-spec-v2.md`。
+> 本プロジェクトは単なるLaravelアプリではなく、100種類以上の業務システムを同じコードベースで
+> 高速開発する **BuildOne Framework** である。設計・実装は下記に従うこと。
+>
+> - アーキテクチャ: [docs/architecture.md](docs/architecture.md)（軽量な Laravel標準寄り Feature First）
+> - コーディング規約: [docs/coding-rule.md](docs/coding-rule.md) ／ セキュリティ: [docs/security.md](docs/security.md)
+> - モジュール開発: [docs/module-guide.md](docs/module-guide.md) ／ CLI: [docs/generator-guide.md](docs/generator-guide.md)
+> - UI: [docs/ui-guide.md](docs/ui-guide.md) ／ テスト: [docs/testing.md](docs/testing.md)
+> - デプロイ: [docs/deployment.md](docs/deployment.md) ／ サーバー: [docs/server-environment.md](docs/server-environment.md)
+> - ロードマップ: [docs/roadmap.md](docs/roadmap.md)
+>
+> **必ず品質ゲートを通す**: `composer ci`（Pint → PHPStan lv6 → Pest）。
+> モジュール追加は `php artisan buildone:make-module {Name}`。設定ファイルの手編集は不要。
+> 過剰設計を避け、Coreを汚さず、共通UI Kitを再利用すること。
+
 ## プロジェクト概要
 
 - ブランド名: BuildOne

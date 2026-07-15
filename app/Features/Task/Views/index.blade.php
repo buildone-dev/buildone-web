@@ -1,0 +1,18 @@
+@extends('layouts.app')
+
+@section('title', 'Task | BuildOne')
+
+@section('content')
+    <section class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+        <h1 class="text-3xl font-bold tracking-tight text-ink">Task</h1>
+        <p class="mt-2 text-slate-600">BuildOne Framework が生成したモジュールです。</p>
+
+        <ul class="mt-8 divide-y divide-slate-200 overflow-hidden rounded-xl border border-slate-200 bg-white">
+            @forelse ($items as $item)
+                <li class="px-5 py-4 text-ink">{{ $item->name }}</li>
+            @empty
+                <li class="px-5 py-4 text-slate-500">データがありません。</li>
+            @endforelse
+        </ul>
+    </section>
+@endsection
