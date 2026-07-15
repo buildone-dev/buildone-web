@@ -9,9 +9,11 @@ use App\Core\Authorization\Permission;
 use App\Features\Time\Http\Requests\StoreEmployeeRequest;
 use App\Features\Time\Http\Requests\UpdateEmployeeRequest;
 use App\Features\Time\Models\Employee;
+use App\Features\Time\Support\EmployeeCsvImporter;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 final class EmployeeController extends Controller
@@ -44,6 +46,21 @@ final class EmployeeController extends Controller
         $this->audit->log('employee.created', $employee, ['code' => $employee->code]);
 
         return redirect()->route('time.employees.index')->with('status', '従業員を登録しました。');
+    }
+
+    public function import(Request $request, EmployeeCsvImporter $importer): RedirectResponse
+    {
+        Gate::authorize(Permission::TimeManage->value);
+
+        $request->validate([
+            'file' => ['required', 'file', 'mimes:csv,txt', 'max:2048'],
+        ]);
+
+        $result = $importer->import($request->file('file')->getRealPath());
+        $this->audit->log('employee.imported', null, $result);
+
+        return redirect()->route('time.employees.index')
+            ->with('status', "{$result['created']}件を取り込みました（スキップ {$result['skipped']}件）。");
     }
 
     public function edit(Employee $employee): View
