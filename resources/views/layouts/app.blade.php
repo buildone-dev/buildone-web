@@ -81,8 +81,8 @@
                 </div>
                 <nav aria-label="フッターナビゲーション">
                     <ul class="flex flex-col gap-2 text-sm sm:items-end">
-                        @if (config('buildone.youtube.url'))
-                            <li><a href="{{ config('buildone.youtube.url') }}" rel="noopener" target="_blank" class="transition hover:text-white">YouTube</a></li>
+                        @if (setting('youtube_url', config('buildone.youtube.url')))
+                            <li><a href="{{ setting('youtube_url', config('buildone.youtube.url')) }}" rel="noopener" target="_blank" class="transition hover:text-white">YouTube</a></li>
                         @endif
                         <li><a href="{{ route('privacy') }}" class="transition hover:text-white">プライバシーポリシー</a></li>
                         <li><a href="{{ route('home') }}#contact" class="transition hover:text-white">お問い合わせ</a></li>

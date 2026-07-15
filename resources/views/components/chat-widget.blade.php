@@ -1,4 +1,4 @@
-@if (config('buildone.chat.enabled'))
+@if (setting_bool('chat_enabled', (bool) config('buildone.chat.enabled')))
     <div id="chat-widget" data-greeting="{{ config('buildone.chat.greeting') }}" data-endpoint="{{ route('chat.message') }}">
         {{-- ランチャー --}}
         <button id="chat-launcher" type="button" aria-label="AIアシスタントに相談する"

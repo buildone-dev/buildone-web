@@ -46,8 +46,8 @@
                     <a href="#systems" class="inline-flex items-center justify-center rounded-lg bg-brand px-6 py-3 font-semibold text-white shadow-sm transition hover:bg-brand-dark">
                         開発中のシステムを見る
                     </a>
-                    @if (config('buildone.youtube.url'))
-                        <a href="{{ config('buildone.youtube.url') }}" rel="noopener" target="_blank" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-6 py-3 font-semibold text-ink transition hover:border-brand hover:text-brand">
+                    @if (setting('youtube_url', config('buildone.youtube.url')))
+                        <a href="{{ setting('youtube_url', config('buildone.youtube.url')) }}" rel="noopener" target="_blank" class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-6 py-3 font-semibold text-ink transition hover:border-brand hover:text-brand">
                             YouTubeを見る
                         </a>
                     @else
@@ -332,8 +332,8 @@
                     <p class="mt-5 max-w-xl leading-relaxed text-slate-300">
                         業務システムを1週間で作る過程を、成功も失敗も含めて公開します。
                     </p>
-                    @if (config('buildone.youtube.url'))
-                        <a href="{{ config('buildone.youtube.url') }}" rel="noopener" target="_blank" class="mt-7 inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-ink transition hover:bg-slate-100">
+                    @if (setting('youtube_url', config('buildone.youtube.url')))
+                        <a href="{{ setting('youtube_url', config('buildone.youtube.url')) }}" rel="noopener" target="_blank" class="mt-7 inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-ink transition hover:bg-slate-100">
                             チャンネルを見る
                         </a>
                     @else
@@ -343,9 +343,9 @@
                     @endif
                 </div>
                 <div>
-                    @if (config('buildone.youtube.video_url'))
+                    @if (setting('youtube_video_url', config('buildone.youtube.video_url')))
                         <div class="aspect-video overflow-hidden rounded-2xl border border-slate-700">
-                            <iframe class="h-full w-full" src="{{ config('buildone.youtube.video_url') }}" title="BuildOne 最新動画" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe class="h-full w-full" src="{{ setting('youtube_video_url', config('buildone.youtube.video_url')) }}" title="BuildOne 最新動画" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     @else
                         <div class="flex aspect-video flex-col items-center justify-center rounded-2xl border border-dashed border-slate-600 bg-slate-800/40">
