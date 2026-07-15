@@ -7,7 +7,7 @@
     class="fixed inset-y-0 left-0 z-40 w-64 -translate-x-full border-r border-slate-200 bg-white transition-transform lg:static lg:translate-x-0"
     aria-label="サイドバー">
     <div class="flex h-16 items-center gap-2 border-b border-slate-200 px-6">
-        <a href="/" class="text-xl font-bold tracking-tight">Build<span class="text-brand">One</span></a>
+        <a href="/" class="text-ink"><x-logo :size="28" /></a>
     </div>
     <nav class="p-3" aria-label="メインメニュー">
         <ul class="space-y-1">

@@ -30,12 +30,13 @@
 
     <header class="fixed inset-x-0 top-0 z-40 border-b border-slate-200/70 bg-white/90 backdrop-blur">
         <div class="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
-            <a href="{{ route('home') }}" class="text-xl font-bold tracking-tight text-ink" aria-label="BuildOne トップページ">
-                Build<span class="text-brand">One</span>
+            <a href="{{ route('home') }}" class="text-ink" aria-label="BuildOne トップページ">
+                <x-logo :size="30" />
             </a>
 
             <nav class="hidden items-center gap-7 text-sm font-medium text-slate-700 md:flex" aria-label="メインナビゲーション">
                 <a href="{{ route('home') }}#about" class="transition hover:text-brand">BuildOneとは</a>
+                <a href="{{ route('home') }}#entry" class="transition hover:text-brand">入退室システム</a>
                 <a href="{{ route('home') }}#systems" class="transition hover:text-brand">開発システム</a>
                 <a href="{{ route('home') }}#youtube" class="transition hover:text-brand">YouTube</a>
                 <a href="{{ route('home') }}#process" class="transition hover:text-brand">開発の流れ</a>
@@ -56,6 +57,7 @@
         <nav id="mobile-menu" class="hidden border-t border-slate-200 bg-white px-4 pb-4 pt-2 md:hidden" aria-label="モバイルナビゲーション">
             <ul class="flex flex-col gap-1 text-sm font-medium text-slate-700">
                 <li><a href="{{ route('home') }}#about" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50 hover:text-brand">BuildOneとは</a></li>
+                <li><a href="{{ route('home') }}#entry" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50 hover:text-brand">入退室システム</a></li>
                 <li><a href="{{ route('home') }}#systems" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50 hover:text-brand">開発システム</a></li>
                 <li><a href="{{ route('home') }}#youtube" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50 hover:text-brand">YouTube</a></li>
                 <li><a href="{{ route('home') }}#process" class="block rounded-lg px-3 py-2.5 hover:bg-slate-50 hover:text-brand">開発の流れ</a></li>
@@ -71,9 +73,9 @@
     <footer class="bg-ink text-slate-300">
         <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6">
             <div class="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                    <p class="text-xl font-bold text-white">Build<span class="text-brand">One</span></p>
-                    <p class="mt-2 text-sm">社長、そのシステム作れます。</p>
+                <div class="text-white">
+                    <x-logo :size="30" text-class="text-xl" />
+                    <p class="mt-2 text-sm text-slate-300">社長、そのシステム作れます。</p>
                     <p class="mt-1 text-sm text-slate-400">YouTube {{ config('buildone.youtube.handle') }}</p>
                 </div>
                 <nav aria-label="フッターナビゲーション">

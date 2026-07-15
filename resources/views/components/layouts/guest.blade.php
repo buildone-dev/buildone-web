@@ -12,8 +12,8 @@
 </head>
 <body class="min-h-screen bg-surface font-sans text-ink antialiased">
     <div class="flex min-h-screen flex-col items-center justify-center p-4">
-        <a href="/" class="mb-6 text-2xl font-bold tracking-tight" aria-label="BuildOne">
-            Build<span class="text-brand">One</span>
+        <a href="/" class="mb-6 text-ink" aria-label="BuildOne">
+            <x-logo :size="36" text-class="text-2xl" />
         </a>
         <div class="w-full max-w-md">
             {{ $slot }}

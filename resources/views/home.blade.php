@@ -129,6 +129,117 @@
         </div>
     </section>
 
+    {{-- ============ このチャンネルの約束 ＋ ターゲット ============ --}}
+    <section id="promises" class="scroll-mt-20 bg-white">
+        <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+            <div class="grid gap-12 lg:grid-cols-2">
+                <div>
+                    <p class="text-sm font-semibold uppercase tracking-widest text-brand">Promise</p>
+                    <h2 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">私たちの約束</h2>
+                    <ul class="mt-8 space-y-3">
+                        @foreach (config('buildone.promises') as $promise)
+                            <li class="flex items-center gap-3">
+                                <span class="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand text-white" aria-hidden="true">
+                                    <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+                                </span>
+                                <span class="font-medium text-ink">{{ $promise }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="lg:pl-8">
+                    <p class="text-sm font-semibold uppercase tracking-widest text-brand">For</p>
+                    <h2 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">こんな方へ</h2>
+                    <div class="mt-8 grid gap-4 sm:grid-cols-3">
+                        @foreach (config('buildone.audience') as $person)
+                            <div class="rounded-2xl border border-slate-200 bg-surface p-5 text-center">
+                                <span class="mx-auto inline-flex h-12 w-12 items-center justify-center rounded-full bg-brand/10 text-brand" aria-hidden="true">
+                                    @switch($person['icon'])
+                                        @case('user')
+                                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" /></svg>
+                                            @break
+                                        @case('users')
+                                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 0 0 3.741-.479 3 3 0 0 0-4.682-2.72m.94 3.198.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0 1 12 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 0 1 6 18.719m12 0a5.971 5.971 0 0 0-.941-3.197m0 0A5.995 5.995 0 0 0 12 12.75a5.995 5.995 0 0 0-5.058 2.772m0 0a3 3 0 0 0-4.681 2.72 8.986 8.986 0 0 0 3.74.477m.94-3.197a5.971 5.971 0 0 0-.94 3.197M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" /></svg>
+                                            @break
+                                        @default
+                                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.6" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 0 1 1.37.49l1.296 2.247a1.125 1.125 0 0 1-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 0 1 0 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 0 1-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 0 1-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 0 1-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 0 1-1.369-.49l-1.297-2.247a1.125 1.125 0 0 1 .26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 0 1 0-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 0 1-.26-1.43l1.297-2.247a1.125 1.125 0 0 1 1.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281Z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" /></svg>
+                                    @endswitch
+                                </span>
+                                <p class="mt-3 text-sm font-semibold text-ink">{{ $person['label'] }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ============ #1 入退室管理システム（詳細） ============ --}}
+    @php($entry = config('buildone.entry'))
+    <section id="entry" class="scroll-mt-20 bg-ink text-white">
+        <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
+            <div class="flex flex-wrap items-end gap-x-4 gap-y-2">
+                <span class="inline-flex items-center rounded-lg bg-brand px-3 py-1 text-lg font-bold">{{ $entry['number'] }}</span>
+                <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">{{ $entry['name'] }}</h2>
+            </div>
+
+            <div class="mt-6 flex flex-wrap gap-2">
+                @foreach ($entry['problems'] as $problem)
+                    <span class="inline-flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1 text-sm text-slate-300">
+                        <svg class="h-3.5 w-3.5 text-accent" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" /></svg>
+                        {{ $problem }}
+                    </span>
+                @endforeach
+            </div>
+
+            {{-- ワークフロー --}}
+            <ol class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+                @foreach ($entry['workflow'] as $flow)
+                    <li class="rounded-2xl bg-white/5 p-5 ring-1 ring-white/10">
+                        <span class="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand text-sm font-bold text-white" aria-hidden="true">{{ $flow['step'] }}</span>
+                        <h3 class="mt-3 font-bold"><span class="sr-only">ステップ{{ $flow['step'] }}：</span>{{ $flow['title'] }}</h3>
+                        <p class="mt-1.5 text-sm leading-relaxed text-slate-300">{{ $flow['text'] }}</p>
+                    </li>
+                @endforeach
+            </ol>
+
+            <div class="mt-12 grid gap-10 lg:grid-cols-2">
+                {{-- 主な機能 --}}
+                <div>
+                    <h3 class="text-sm font-semibold uppercase tracking-widest text-brand">主な機能（予定）</h3>
+                    <div class="mt-4 grid grid-cols-2 gap-2">
+                        @foreach ($entry['functions'] as $fn)
+                            <div class="flex items-center gap-2 rounded-lg bg-white/5 px-3 py-2 text-sm text-slate-200">
+                                <span class="h-1.5 w-1.5 shrink-0 rounded-full bg-accent" aria-hidden="true"></span>
+                                {{ $fn }}
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                {{-- 数値 --}}
+                <div>
+                    <h3 class="text-sm font-semibold uppercase tracking-widest text-brand">開発の実績</h3>
+                    <div class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
+                        @foreach ($entry['stats'] as $stat)
+                            <div class="rounded-2xl bg-white/5 p-4 text-center ring-1 ring-white/10">
+                                <p class="text-xs text-slate-400">{{ $stat['label'] }}</p>
+                                <p class="mt-1 text-xl font-bold text-white">{{ $stat['value'] }}<span class="ml-0.5 text-xs font-medium text-slate-400">{{ $stat['unit'] }}</span></p>
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="mt-6">
+                        <h3 class="text-sm font-semibold uppercase tracking-widest text-brand">開発スタック（予定）</h3>
+                        <div class="mt-3 flex flex-wrap gap-2">
+                            @foreach (config('buildone.stack') as $tech)
+                                <span class="rounded-lg bg-white/5 px-3 py-1.5 text-xs text-slate-200"><span class="font-semibold text-white">{{ $tech['name'] }}</span> <span class="text-slate-400">{{ $tech['role'] }}</span></span>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     {{-- ============ 開発システム一覧 ============ --}}
     <section id="systems" class="scroll-mt-20 bg-white">
         <div class="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">
