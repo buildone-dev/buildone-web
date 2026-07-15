@@ -16,7 +16,10 @@
                     required autocomplete="current-password" />
             </x-form-field>
 
-            <x-checkbox name="remember" label="ログイン状態を保持する" />
+            <div class="flex items-center justify-between gap-2">
+                <x-checkbox name="remember" label="ログイン状態を保持する" />
+                <a href="{{ route('password.request') }}" class="text-sm text-brand underline underline-offset-2 hover:text-brand-dark">パスワードをお忘れの方</a>
+            </div>
 
             <x-button type="submit" class="w-full">ログイン</x-button>
         </form>
