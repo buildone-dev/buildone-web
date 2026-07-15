@@ -1,0 +1,15 @@
+<?php
+
+declare(strict_types=1);
+
+use __NAMESPACE__\Domain\__MODULE__;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+uses(TestCase::class, RefreshDatabase::class);
+
+it('__MODULE_LOWER__ 一覧が表示できる', function (): void {
+    __MODULE__::factory()->count(3)->create();
+
+    $this->get('/__TABLE__')->assertOk();
+});

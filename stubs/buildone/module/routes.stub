@@ -1,0 +1,8 @@
+<?php
+
+declare(strict_types=1);
+
+use __NAMESPACE__\Presentation\Http\Controllers\__MODULE__Controller;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/__TABLE__', [__MODULE__Controller::class, 'index'])->name('__MODULE_LOWER__.index');

@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace __NAMESPACE__\Application\Services;
+
+use __NAMESPACE__\Domain\Contracts\__MODULE__Repository;
+use __NAMESPACE__\Domain\__MODULE__;
+use Illuminate\Support\Collection;
+
+/**
+ * __MODULE__ のユースケースを束ねるアプリケーションサービス。
+ */
+final class __MODULE__Service
+{
+    public function __construct(
+        private readonly __MODULE__Repository $repository,
+    ) {}
+
+    /**
+     * @return Collection<int, __MODULE__>
+     */
+    public function list(): Collection
+    {
+        return $this->repository->all();
+    }
+}

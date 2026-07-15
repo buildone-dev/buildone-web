@@ -2,9 +2,28 @@
 
 **社長、そのシステム作れます。** — AIで会社の業務システムを1週間で開発・公開。
 
-BuildOneは、AIを活用して企業で本当に使える業務システムを企画・設計・開発・検証し、その過程をYouTube（@buildonejp）で公開するプロジェクトです。このリポジトリはその公式サイト（ショールーム型LP）です。
+BuildOneは、AIを活用して企業で本当に使える業務システムを企画・設計・開発・検証し、その過程をYouTube（@buildonejp）で公開するプロジェクトです。
+
+このリポジトリは、公開中の**公式サイト（ショールーム型LP）**であると同時に、100種類以上の業務システムを同じコードベースで高速開発する **BuildOne Framework**（Laravelベース）の基盤です。
 
 - 本番URL: https://buildone.sakura.ne.jp
+- 最優先設計基準: [docs/framework-spec-v2.md](docs/framework-spec-v2.md)
+
+## BuildOne Framework
+
+Feature First + Clean Architecture（Presentation → Application → Domain → Infrastructure）で、モジュール（業務システム）を規約に従って追加するだけで自動配線される。
+
+```bash
+php artisan buildone:new-module Entry   # 4層の縦割りスライスを生成
+composer dump-autoload && php artisan migrate
+# → /entries が有効化される（設定ファイルの手編集は不要）
+```
+
+- アーキテクチャ: [docs/architecture.md](docs/architecture.md)
+- モジュール開発: [docs/module-guide.md](docs/module-guide.md) ／ CLI: [docs/generator-guide.md](docs/generator-guide.md)
+- コーディング規約: [docs/coding-rule.md](docs/coding-rule.md) ／ UI: [docs/ui-guide.md](docs/ui-guide.md)
+
+品質ゲート: `composer ci`（Pint → PHPStan level 6 → Pest）。CI は `.github/workflows/ci.yml`。
 
 ## 技術構成
 
@@ -86,6 +105,12 @@ ssh buildone-sakura "cd ~/buildone-web && php artisan up"
 
 ## ドキュメント
 
+- [docs/framework-spec-v2.md](docs/framework-spec-v2.md) — **最優先**: Framework v2.0 設計書
+- [docs/architecture.md](docs/architecture.md) — アーキテクチャ（Feature First + Clean Architecture）
+- [docs/coding-rule.md](docs/coding-rule.md) — コーディング規約・品質ゲート
+- [docs/module-guide.md](docs/module-guide.md) — モジュール開発ガイド
+- [docs/generator-guide.md](docs/generator-guide.md) — ジェネレータ / BuildOne CLI
+- [docs/ui-guide.md](docs/ui-guide.md) — UI・ブランドカラー
 - [docs/deployment.md](docs/deployment.md) — さくらのサーバーへのデプロイ手順
 - [docs/server-audit.md](docs/server-audit.md) — サーバー環境の調査結果
-- [docs/content-guide.md](docs/content-guide.md) — コンテンツの追加・変更ガイド
+- [docs/content-guide.md](docs/content-guide.md) — LPコンテンツの追加・変更ガイド

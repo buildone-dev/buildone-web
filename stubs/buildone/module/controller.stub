@@ -1,0 +1,23 @@
+<?php
+
+declare(strict_types=1);
+
+namespace __NAMESPACE__\Presentation\Http\Controllers;
+
+use __NAMESPACE__\Application\Services\__MODULE__Service;
+use App\Http\Controllers\Controller;
+use Illuminate\Contracts\View\View;
+
+final class __MODULE__Controller extends Controller
+{
+    public function __construct(
+        private readonly __MODULE__Service $service,
+    ) {}
+
+    public function index(): View
+    {
+        return view('__MODULE_LOWER__::index', [
+            'items' => $this->service->list(),
+        ]);
+    }
+}
