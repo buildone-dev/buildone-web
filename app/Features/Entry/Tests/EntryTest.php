@@ -21,7 +21,8 @@ it('打刻画面を開ける（EntryView）', function (): void {
     actingAs(makeUserWith([Permission::EntryView->value]))
         ->get('/admin/entry/kiosk')
         ->assertOk()
-        ->assertSee('打刻');
+        ->assertSee('打刻')
+        ->assertSee('カメラで読み取る');
 });
 
 it('打刻すると入室→退室がトグルされ記録が残る', function (): void {

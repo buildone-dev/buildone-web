@@ -251,6 +251,71 @@ document.querySelectorAll('[data-inquiry-form]').forEach((f) => {
     });
 });
 
+// --- QRカメラ読み取り（BarcodeDetector API。対応端末のみ） ---
+(function () {
+    const root = document.getElementById('qr-scanner');
+    if (!root) return;
+
+    const startBtn = document.getElementById('qr-start');
+    const cam = document.getElementById('qr-cam');
+    const video = document.getElementById('qr-video');
+    const status = document.getElementById('qr-status');
+    const input = document.getElementById(root.dataset.input || 'code');
+    const form = input ? input.closest('form') : null;
+
+    if (!('BarcodeDetector' in window) || !navigator.mediaDevices?.getUserMedia) {
+        if (startBtn) startBtn.style.display = 'none';
+        if (status) status.textContent = 'この端末はカメラ読み取りに非対応です（手入力をご利用ください）。';
+        return;
+    }
+
+    let stream = null;
+    let detector = null;
+    let scanning = false;
+
+    function stop() {
+        scanning = false;
+        if (startBtn) startBtn.textContent = '📷 カメラで読み取る';
+        cam?.classList.add('hidden');
+        stream?.getTracks().forEach((t) => t.stop());
+        stream = null;
+    }
+
+    async function scan() {
+        if (!scanning || !detector) return;
+        try {
+            const codes = await detector.detect(video);
+            if (codes.length > 0 && codes[0].rawValue) {
+                if (input) input.value = codes[0].rawValue;
+                stop();
+                if (form) (form.requestSubmit ? form.requestSubmit() : form.submit());
+                return;
+            }
+        } catch (e) {
+            /* 一時的な検出失敗は無視して継続 */
+        }
+        requestAnimationFrame(scan);
+    }
+
+    startBtn?.addEventListener('click', async () => {
+        if (scanning) { stop(); return; }
+        try {
+            status.textContent = '';
+            detector = new window.BarcodeDetector({ formats: ['qr_code'] });
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+            video.srcObject = stream;
+            await video.play();
+            cam.classList.remove('hidden');
+            scanning = true;
+            startBtn.textContent = 'カメラを止める';
+            requestAnimationFrame(scan);
+        } catch (e) {
+            status.textContent = 'カメラを起動できませんでした。権限をご確認ください。';
+            stop();
+        }
+    });
+})();
+
 // --- クリップボードにコピー（data-copy="対象要素ID"） ---
 document.addEventListener('click', (e) => {
     const trigger = e.target.closest('[data-copy]');
