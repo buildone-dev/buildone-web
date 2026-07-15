@@ -12,4 +12,9 @@ final class DashboardServiceProvider extends ModuleServiceProvider
     {
         return 'dashboard';
     }
+
+    protected function bindings(): void
+    {
+        $this->app->singleton(WidgetRegistry::class);
+    }
 }
