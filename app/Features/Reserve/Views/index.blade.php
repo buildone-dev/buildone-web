@@ -22,9 +22,11 @@
         <x-stat-card label="今後の予約" :value="$upcomingCount" />
     </div>
 
-    <x-card title="今後の予約" class="mt-6">
+    <div class="mt-6"><x-search-box placeholder="顧客名で検索" /></div>
+
+    <x-card title="今後の予約" class="mt-4">
         @if ($reservations->isEmpty())
-            <x-empty-state title="今後の予約はありません" description="予約を登録してください。" />
+            <x-empty-state :title="request('q') ? '該当する予約はありません' : '今後の予約はありません'" description="予約を登録してください。" />
         @else
             <x-table>
                 <x-slot:head>

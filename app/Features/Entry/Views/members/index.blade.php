@@ -13,8 +13,10 @@
         <x-alert variant="success" class="mb-4">{{ session('status') }}</x-alert>
     @endif
 
+    <div class="mb-4"><x-search-box placeholder="名前・コードで検索" /></div>
+
     @if ($members->isEmpty())
-        <x-empty-state title="利用者がいません" description="QR・ICカードのコードを持つ利用者を登録してください。" />
+        <x-empty-state :title="request('q') ? '該当する利用者がいません' : '利用者がいません'" description="QR・ICカードのコードを持つ利用者を登録してください。" />
     @else
         <x-table>
             <x-slot:head>

@@ -13,8 +13,10 @@
         <x-alert variant="success" class="mb-4">{{ session('status') }}</x-alert>
     @endif
 
+    <div class="mb-4"><x-search-box placeholder="名前・メールで検索" /></div>
+
     @if ($users->isEmpty())
-        <x-empty-state title="ユーザーがいません" />
+        <x-empty-state :title="request('q') ? '該当するユーザーがいません' : 'ユーザーがいません'" />
     @else
         <x-table>
             <x-slot:head>

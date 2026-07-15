@@ -28,9 +28,10 @@ final class ReservationController extends Controller
             'pendingCount' => Reservation::query()->where('status', Reservation::PENDING)->count(),
             'upcomingCount' => Reservation::query()->where('reserved_at', '>=', now())->where('status', '!=', Reservation::CANCELLED)->count(),
             'reservations' => Reservation::query()
+                ->when(trim((string) request('q')) !== '', fn ($query) => $query->where('customer_name', 'like', '%'.trim((string) request('q')).'%'))
                 ->where('reserved_at', '>=', today())
                 ->orderBy('reserved_at')
-                ->paginate(20),
+                ->paginate(20)->withQueryString(),
         ]);
     }
 

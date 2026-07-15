@@ -4,8 +4,10 @@
         <h2 class="mt-2 text-2xl font-bold tracking-tight text-ink">問い合わせ</h2>
     </x-slot:header>
 
+    <div class="mb-4"><x-search-box placeholder="会社名・担当者・メールで検索" /></div>
+
     @if ($inquiries->isEmpty())
-        <x-empty-state title="問い合わせはまだありません" />
+        <x-empty-state :title="request('q') ? '該当する問い合わせがありません' : '問い合わせはまだありません'" />
     @else
         <div class="space-y-4">
             @foreach ($inquiries as $inquiry)

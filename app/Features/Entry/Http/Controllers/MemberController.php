@@ -22,8 +22,12 @@ final class MemberController extends Controller
     {
         Gate::authorize(Permission::EntryView->value);
 
+        $q = trim((string) request('q'));
+
         return view('entry::members.index', [
-            'members' => Member::query()->orderBy('name')->paginate(20),
+            'members' => Member::query()
+                ->when($q !== '', fn ($query) => $query->where(fn ($w) => $w->where('name', 'like', "%{$q}%")->orWhere('code', 'like', "%{$q}%")))
+                ->orderBy('name')->paginate(20)->withQueryString(),
         ]);
     }
 

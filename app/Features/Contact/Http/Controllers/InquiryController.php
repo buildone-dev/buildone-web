@@ -16,8 +16,12 @@ final class InquiryController extends Controller
     {
         Gate::authorize(Permission::InquiryView->value);
 
+        $q = trim((string) request('q'));
+
         return view('contact::admin', [
-            'inquiries' => Inquiry::query()->latest()->paginate(20),
+            'inquiries' => Inquiry::query()
+                ->when($q !== '', fn ($query) => $query->where(fn ($w) => $w->where('company', 'like', "%{$q}%")->orWhere('contact_name', 'like', "%{$q}%")->orWhere('email', 'like', "%{$q}%")))
+                ->latest()->paginate(20)->withQueryString(),
         ]);
     }
 }

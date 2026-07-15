@@ -13,8 +13,10 @@
         <x-alert variant="success" class="mb-4">{{ session('status') }}</x-alert>
     @endif
 
+    <div class="mb-4"><x-search-box placeholder="名前・コードで検索" /></div>
+
     @if ($employees->isEmpty())
-        <x-empty-state title="従業員がいません" description="コードを持つ従業員を登録してください。" />
+        <x-empty-state :title="request('q') ? '該当する従業員がいません' : '従業員がいません'" description="コードを持つ従業員を登録してください。" />
     @else
         <x-table>
             <x-slot:head>

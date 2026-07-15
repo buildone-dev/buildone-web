@@ -24,8 +24,12 @@ final class UserController extends Controller
     {
         Gate::authorize(Permission::UsersView->value);
 
+        $q = trim((string) request('q'));
+
         return view('users::index', [
-            'users' => User::query()->with('role')->latest()->paginate(20),
+            'users' => User::query()->with('role')
+                ->when($q !== '', fn ($query) => $query->where(fn ($w) => $w->where('name', 'like', "%{$q}%")->orWhere('email', 'like', "%{$q}%")))
+                ->latest()->paginate(20)->withQueryString(),
         ]);
     }
 

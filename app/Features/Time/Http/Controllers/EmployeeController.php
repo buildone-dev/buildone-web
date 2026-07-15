@@ -22,8 +22,12 @@ final class EmployeeController extends Controller
     {
         Gate::authorize(Permission::TimeView->value);
 
+        $q = trim((string) request('q'));
+
         return view('time::employees.index', [
-            'employees' => Employee::query()->orderBy('name')->paginate(20),
+            'employees' => Employee::query()
+                ->when($q !== '', fn ($query) => $query->where(fn ($w) => $w->where('name', 'like', "%{$q}%")->orWhere('code', 'like', "%{$q}%")))
+                ->orderBy('name')->paginate(20)->withQueryString(),
         ]);
     }
 
