@@ -17,6 +17,8 @@ enum Permission: string
     case EntryView = 'entry.view';
     case EntryManage = 'entry.manage';
     case InquiryView = 'inquiry.view';
+    case TimeView = 'time.view';
+    case TimeManage = 'time.manage';
 
     public function label(): string
     {
@@ -29,6 +31,8 @@ enum Permission: string
             self::EntryView => '入退室 閲覧・打刻',
             self::EntryManage => '入退室 利用者管理',
             self::InquiryView => '問い合わせ閲覧',
+            self::TimeView => '勤怠 閲覧・打刻',
+            self::TimeManage => '勤怠 従業員管理',
         };
     }
 
