@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>@yield('title', 'BuildOne | 社長、そのシステム作れます。')</title>
     <meta name="description" content="@yield('meta_description', 'AIで会社の業務システムを1週間で開発・公開。QR・ICカード入退室管理、勤怠管理、予約管理など、企業の現場で本当に使えるシステムを企画から検証まで公開します。')">
@@ -93,5 +94,8 @@
             </p>
         </div>
     </footer>
+
+    <x-inquiry-modal />
+    <x-chat-widget />
 </body>
 </html>

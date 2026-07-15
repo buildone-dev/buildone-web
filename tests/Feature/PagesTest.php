@@ -44,34 +44,14 @@ class PagesTest extends TestCase
         $response->assertSee('Coming Soon', false);
     }
 
-    public function test_contact_shows_placeholder_without_invalid_link_when_unset(): void
+    public function test_contact_section_shows_working_form_entrypoints(): void
     {
-        config(['buildone.contact.url' => null, 'buildone.contact.email' => null]);
-
         $response = $this->get('/');
 
-        $response->assertSee('お問い合わせ窓口準備中', false);
-        $response->assertDontSee('mailto:', false);
-    }
-
-    public function test_contact_button_appears_when_email_is_set(): void
-    {
-        config(['buildone.contact.url' => null, 'buildone.contact.email' => 'info@example.com']);
-
-        $response = $this->get('/');
-
-        $response->assertSee('mailto:info@example.com', false);
+        // 準備中プレースホルダは廃止し、常に本物のフォーム導線を表示する
         $response->assertDontSee('お問い合わせ窓口準備中', false);
-    }
-
-    public function test_contact_url_takes_precedence(): void
-    {
-        config(['buildone.contact.url' => 'https://example.com/contact', 'buildone.contact.email' => 'info@example.com']);
-
-        $response = $this->get('/');
-
-        $response->assertSee('https://example.com/contact', false);
-        $response->assertDontSee('mailto:', false);
+        $response->assertSee('data-modal-open="inquiry-modal"', false);
+        $response->assertSee(route('contact.show'), false);
     }
 
     public function test_youtube_placeholder_when_video_unset(): void

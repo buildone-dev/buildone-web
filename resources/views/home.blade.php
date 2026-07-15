@@ -387,21 +387,11 @@
                 @endforeach
             </ul>
 
-            <div class="mt-10 text-center">
-                @if (config('buildone.contact.url'))
-                    <a href="{{ config('buildone.contact.url') }}" rel="noopener" target="_blank" class="inline-flex items-center justify-center rounded-lg bg-brand px-8 py-3.5 font-semibold text-white shadow-sm transition hover:bg-brand-dark">
-                        お問い合わせフォームへ
-                    </a>
-                @elseif (config('buildone.contact.email'))
-                    <a href="mailto:{{ config('buildone.contact.email') }}" class="inline-flex items-center justify-center rounded-lg bg-brand px-8 py-3.5 font-semibold text-white shadow-sm transition hover:bg-brand-dark">
-                        メールで相談する
-                    </a>
-                @else
-                    <p class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-8 py-3.5 text-sm font-semibold text-slate-500">
-                        お問い合わせ窓口準備中
-                    </p>
-                @endif
+            <div class="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <x-button type="button" size="lg" data-modal-open="inquiry-modal">お問い合わせフォームを開く</x-button>
+                <x-link-button :href="route('contact.show')" variant="secondary" size="lg">問い合わせページへ</x-link-button>
             </div>
+            <p class="mt-4 text-center text-sm text-slate-500">右下のAIアシスタントでも、その場でご相談いただけます。</p>
         </div>
     </section>
 

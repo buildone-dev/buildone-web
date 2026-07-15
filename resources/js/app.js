@@ -108,3 +108,161 @@ window.toast = function (message, type = 'success') {
         setTimeout(() => el.remove(), 300);
     }, 3500);
 };
+
+// --- チャットウィジェット ---
+(function () {
+    const widget = document.getElementById('chat-widget');
+    if (!widget) return;
+
+    const launcher = document.getElementById('chat-launcher');
+    const panel = document.getElementById('chat-panel');
+    const closeBtn = document.getElementById('chat-close');
+    const messagesEl = document.getElementById('chat-messages');
+    const form = document.getElementById('chat-form');
+    const input = document.getElementById('chat-input');
+    const endpoint = widget.dataset.endpoint;
+    const csrf = document.querySelector('meta[name="csrf-token"]')?.content || '';
+    const history = [];
+    const conversationId =
+        window.crypto?.randomUUID?.() ||
+        'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+            const r = (Math.random() * 16) | 0;
+            return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
+        });
+    let started = false;
+    let busy = false;
+
+    function open() {
+        panel.classList.remove('hidden');
+        launcher.classList.add('hidden');
+        if (!started) {
+            addBubble('assistant', widget.dataset.greeting);
+            started = true;
+        }
+        input.focus();
+    }
+    function close() {
+        panel.classList.add('hidden');
+        launcher.classList.remove('hidden');
+    }
+
+    function addBubble(role, text) {
+        const wrap = document.createElement('div');
+        wrap.className = role === 'user' ? 'flex justify-end' : 'flex justify-start';
+        const bubble = document.createElement('div');
+        bubble.className =
+            role === 'user'
+                ? 'max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-br-sm bg-brand px-3.5 py-2 text-white'
+                : 'max-w-[85%] whitespace-pre-wrap rounded-2xl rounded-bl-sm bg-white px-3.5 py-2 text-ink ring-1 ring-slate-200';
+        bubble.textContent = text;
+        wrap.appendChild(bubble);
+        messagesEl.appendChild(wrap);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+        return bubble;
+    }
+
+    function addCta(cta) {
+        // 問い合わせフォーム表示中は誘導カードを重複表示しない
+        const modal = document.getElementById('inquiry-modal');
+        if (modal && !modal.classList.contains('hidden')) return;
+
+        const card = document.createElement('div');
+        card.className = 'rounded-2xl border border-brand/30 bg-brand/5 p-3.5';
+        const title = document.createElement('p');
+        title.className = 'text-sm font-bold text-ink';
+        title.textContent = cta.title;
+        const msg = document.createElement('p');
+        msg.className = 'mt-1 text-xs leading-relaxed text-slate-600';
+        msg.textContent = cta.message;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className =
+            'mt-3 inline-flex items-center justify-center rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white hover:bg-brand-dark';
+        btn.textContent = cta.button_text;
+        btn.addEventListener('click', openInquiryFromChat);
+        card.append(title, msg, btn);
+        messagesEl.appendChild(card);
+        messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+
+    function openInquiryFromChat() {
+        const transcript = history
+            .map((x) => (x.role === 'user' ? 'ユーザー: ' : 'アシスタント: ') + x.content)
+            .join('\n');
+        const hidden = document.getElementById('inquiry-chat-transcript');
+        if (hidden) hidden.value = transcript;
+        const convField = document.getElementById('inquiry-conversation-id');
+        if (convField) convField.value = conversationId;
+
+        const lastUser = [...history].reverse().find((x) => x.role === 'user');
+        const taskField = document.getElementById('current_task');
+        if (lastUser && taskField && !taskField.value) taskField.value = lastUser.content;
+
+        const modal = document.getElementById('inquiry-modal');
+        if (modal) {
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+    }
+
+    async function send(text) {
+        if (busy || !text) return;
+        busy = true;
+        addBubble('user', text);
+        history.push({ role: 'user', content: text });
+        const typing = addBubble('assistant', '…');
+        try {
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrf, Accept: 'application/json' },
+                body: JSON.stringify({ conversation_id: conversationId, messages: history }),
+            });
+            const data = await res.json();
+            typing.textContent = data.answer || '（応答がありませんでした）';
+            history.push({ role: 'assistant', content: data.answer || '' });
+            if (data.show_contact_cta && data.contact_cta) addCta(data.contact_cta);
+        } catch (e) {
+            typing.textContent = '通信エラーが発生しました。お手数ですが下記からお問い合わせください。';
+        } finally {
+            busy = false;
+            input.focus();
+        }
+    }
+
+    launcher.addEventListener('click', open);
+    closeBtn.addEventListener('click', close);
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+        input.value = '';
+        send(text);
+    });
+})();
+
+// --- 問い合わせフォーム 二重送信防止 ---
+document.querySelectorAll('[data-inquiry-form]').forEach((f) => {
+    f.addEventListener('submit', () => {
+        const btn = f.querySelector('button[type="submit"]');
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = '送信中…';
+        }
+    });
+});
+
+// --- クリップボードにコピー（data-copy="対象要素ID"） ---
+document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('[data-copy]');
+    if (!trigger) return;
+    const target = document.getElementById(trigger.getAttribute('data-copy'));
+    if (!target) return;
+    const text = target.textContent || '';
+    navigator.clipboard?.writeText(text).then(() => {
+        const original = trigger.textContent;
+        trigger.textContent = 'コピーしました';
+        setTimeout(() => {
+            trigger.textContent = original;
+        }, 1500);
+    });
+});
