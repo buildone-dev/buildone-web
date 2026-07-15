@@ -49,3 +49,16 @@ h3 {
     outline: 2px solid var(--color-brand);
     outline-offset: 2px;
 }
+
+/*
+ * モバイルでの入力時オートズーム（画面の自動拡大）を防ぐ。
+ * iOS Safari 等はフォントが16px未満の入力にフォーカスすると自動でズームインするため、
+ * スマホ幅ではフォームコントロールを16pxに固定する（ピンチズームは無効化しない）。
+ */
+@media (max-width: 640px) {
+    input,
+    textarea,
+    select {
+        font-size: 16px !important;
+    }
+}
