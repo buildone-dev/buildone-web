@@ -3,9 +3,12 @@
         <x-breadcrumb :items="[['label' => 'ダッシュボード', 'href' => route('dashboard')], ['label' => '入退室', 'href' => route('entry.index')], ['label' => '利用者']]" />
         <div class="mt-2 flex items-center justify-between gap-4">
             <h2 class="text-2xl font-bold tracking-tight text-ink">利用者</h2>
-            @can(\App\Core\Authorization\Permission::EntryManage->value)
-                <x-link-button :href="route('entry.members.create')" size="sm">利用者を登録</x-link-button>
-            @endcan
+            <div class="flex items-center gap-2">
+                <x-link-button :href="route('entry.members.export')" variant="secondary" size="sm">CSV出力</x-link-button>
+                @can(\App\Core\Authorization\Permission::EntryManage->value)
+                    <x-link-button :href="route('entry.members.create')" size="sm">利用者を登録</x-link-button>
+                @endcan
+            </div>
         </div>
     </x-slot:header>
 

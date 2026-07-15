@@ -15,6 +15,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 final class EmployeeController extends Controller
 {
@@ -76,6 +77,32 @@ final class EmployeeController extends Controller
         $this->audit->log('employee.updated', $employee, ['code' => $employee->code]);
 
         return redirect()->route('time.employees.index')->with('status', '従業員を更新しました。');
+    }
+
+    public function export(): StreamedResponse
+    {
+        Gate::authorize(Permission::TimeView->value);
+
+        $filename = 'employees_'.now()->format('Ymd_His').'.csv';
+
+        return response()->streamDownload(function (): void {
+            $out = fopen('php://output', 'w');
+
+            if ($out === false) {
+                return;
+            }
+
+            fwrite($out, "\xEF\xBB\xBF");
+            fputcsv($out, ['名前', 'コード', '状態']);
+
+            Employee::query()->orderBy('name')->chunk(500, function ($employees) use ($out): void {
+                foreach ($employees as $employee) {
+                    fputcsv($out, [$employee->name, $employee->code, $employee->is_active ? '有効' : '無効']);
+                }
+            });
+
+            fclose($out);
+        }, $filename, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
     public function toggle(Employee $employee): RedirectResponse

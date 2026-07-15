@@ -34,3 +34,14 @@ it('閲覧権限だけでは取込できない', function (): void {
         ->post('/admin/time/employees/import', ['file' => $file])
         ->assertForbidden();
 });
+
+it('従業員をCSVで出力できる', function (): void {
+    Employee::factory()->create(['name' => '山田 太郎', 'code' => 'EMP-9001']);
+
+    $response = actingAs(makeUserWith([Permission::TimeView->value]))
+        ->get('/admin/time/employees/export')
+        ->assertOk();
+
+    expect($response->headers->get('content-type'))->toContain('text/csv');
+    expect($response->streamedContent())->toContain('EMP-9001');
+});

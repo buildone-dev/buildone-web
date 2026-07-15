@@ -35,3 +35,14 @@ it('閲覧権限だけでは取込できない', function (): void {
         ->post('/admin/entry/members/import', ['file' => $file])
         ->assertForbidden();
 });
+
+it('利用者をCSVで出力できる', function (): void {
+    Member::factory()->create(['name' => '山田 太郎', 'code' => 'CARD-9001']);
+
+    $response = actingAs(makeUserWith([Permission::EntryView->value]))
+        ->get('/admin/entry/members/export')
+        ->assertOk();
+
+    expect($response->headers->get('content-type'))->toContain('text/csv');
+    expect($response->streamedContent())->toContain('CARD-9001');
+});

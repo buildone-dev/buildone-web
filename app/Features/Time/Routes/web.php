@@ -16,6 +16,7 @@ Route::middleware('auth')->prefix('admin/time')->name('time.')->group(function (
     Route::post('/punch', [TimeClockController::class, 'punch'])->name('punch');
 
     Route::get('/employees', [EmployeeController::class, 'index'])->name('employees.index');
+    Route::get('/employees/export', [EmployeeController::class, 'export'])->name('employees.export');
     Route::get('/employees/create', [EmployeeController::class, 'create'])->name('employees.create');
     Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
     Route::post('/employees/import', [EmployeeController::class, 'import'])->name('employees.import');

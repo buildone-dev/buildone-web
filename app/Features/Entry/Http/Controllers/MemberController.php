@@ -15,6 +15,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 final class MemberController extends Controller
 {
@@ -76,6 +77,32 @@ final class MemberController extends Controller
 
         return redirect()->route('entry.members.index')
             ->with('status', "{$result['created']}件を取り込みました（スキップ {$result['skipped']}件）。");
+    }
+
+    public function export(): StreamedResponse
+    {
+        Gate::authorize(Permission::EntryView->value);
+
+        $filename = 'members_'.now()->format('Ymd_His').'.csv';
+
+        return response()->streamDownload(function (): void {
+            $out = fopen('php://output', 'w');
+
+            if ($out === false) {
+                return;
+            }
+
+            fwrite($out, "\xEF\xBB\xBF");
+            fputcsv($out, ['名前', 'コード', '状態']);
+
+            Member::query()->orderBy('name')->chunk(500, function ($members) use ($out): void {
+                foreach ($members as $member) {
+                    fputcsv($out, [$member->name, $member->code, $member->is_active ? '有効' : '無効']);
+                }
+            });
+
+            fclose($out);
+        }, $filename, ['Content-Type' => 'text/csv; charset=UTF-8']);
     }
 
     public function toggle(Member $member): RedirectResponse
