@@ -23,6 +23,8 @@ enum Permission: string
     case ShiftManage = 'shift.manage';
     case ReserveView = 'reserve.view';
     case ReserveManage = 'reserve.manage';
+    case ReportView = 'report.view';
+    case ReportManage = 'report.manage';
 
     public function label(): string
     {
@@ -41,6 +43,8 @@ enum Permission: string
             self::ShiftManage => 'シフト 管理',
             self::ReserveView => '予約 閲覧',
             self::ReserveManage => '予約 管理',
+            self::ReportView => '日報 閲覧',
+            self::ReportManage => '日報 作成・編集',
         };
     }
 

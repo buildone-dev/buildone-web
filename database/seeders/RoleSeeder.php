@@ -35,6 +35,8 @@ class RoleSeeder extends Seeder
                 Permission::ShiftManage->value,
                 Permission::ReserveView->value,
                 Permission::ReserveManage->value,
+                Permission::ReportView->value,
+                Permission::ReportManage->value,
             ]],
         );
 
