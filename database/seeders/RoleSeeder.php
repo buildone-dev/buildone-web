@@ -26,6 +26,8 @@ class RoleSeeder extends Seeder
                 Permission::UsersView->value,
                 Permission::UsersManage->value,
                 Permission::AuditView->value,
+                Permission::EntryView->value,
+                Permission::EntryManage->value,
             ]],
         );
 
@@ -33,6 +35,7 @@ class RoleSeeder extends Seeder
             ['name' => 'viewer'],
             ['label' => '閲覧者', 'permissions' => [
                 Permission::UsersView->value,
+                Permission::EntryView->value,
             ]],
         );
     }

@@ -14,6 +14,8 @@ enum Permission: string
     case RolesManage = 'roles.manage';
     case AuditView = 'audit.view';
     case SettingsManage = 'settings.manage';
+    case EntryView = 'entry.view';
+    case EntryManage = 'entry.manage';
 
     public function label(): string
     {
@@ -23,6 +25,8 @@ enum Permission: string
             self::RolesManage => 'ロール・権限管理',
             self::AuditView => '監査ログ閲覧',
             self::SettingsManage => '設定管理',
+            self::EntryView => '入退室 閲覧・打刻',
+            self::EntryManage => '入退室 利用者管理',
         };
     }
 
