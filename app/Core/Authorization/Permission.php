@@ -19,6 +19,8 @@ enum Permission: string
     case InquiryView = 'inquiry.view';
     case TimeView = 'time.view';
     case TimeManage = 'time.manage';
+    case ShiftView = 'shift.view';
+    case ShiftManage = 'shift.manage';
 
     public function label(): string
     {
@@ -33,6 +35,8 @@ enum Permission: string
             self::InquiryView => '問い合わせ閲覧',
             self::TimeView => '勤怠 閲覧・打刻',
             self::TimeManage => '勤怠 従業員管理',
+            self::ShiftView => 'シフト 閲覧',
+            self::ShiftManage => 'シフト 管理',
         };
     }
 
