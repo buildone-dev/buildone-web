@@ -17,6 +17,7 @@ Route::middleware('auth')->prefix('admin/entry')->name('entry.')->group(function
     Route::get('/members', [MemberController::class, 'index'])->name('members.index');
     Route::get('/members/create', [MemberController::class, 'create'])->name('members.create');
     Route::post('/members', [MemberController::class, 'store'])->name('members.store');
+    Route::post('/members/import', [MemberController::class, 'import'])->name('members.import');
     Route::get('/members/{member}/edit', [MemberController::class, 'edit'])->name('members.edit');
     Route::put('/members/{member}', [MemberController::class, 'update'])->name('members.update');
     Route::patch('/members/{member}/toggle', [MemberController::class, 'toggle'])->name('members.toggle');

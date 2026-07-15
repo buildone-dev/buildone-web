@@ -13,6 +13,22 @@
         <x-alert variant="success" class="mb-4">{{ session('status') }}</x-alert>
     @endif
 
+    @can(\App\Core\Authorization\Permission::EntryManage->value)
+        <x-card class="mb-4">
+            <form method="POST" action="{{ route('entry.members.import') }}" enctype="multipart/form-data" class="flex flex-wrap items-center gap-3">
+                @csrf
+                <span class="text-sm font-medium text-ink">CSV一括取込</span>
+                <input type="file" name="file" accept=".csv,text/csv" required
+                    class="text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-brand/10 file:px-3 file:py-1.5 file:text-sm file:font-semibold file:text-brand hover:file:bg-brand/20" />
+                <x-button type="submit" variant="secondary" size="sm">取り込む</x-button>
+                <span class="text-xs text-slate-400">形式: 1列目=名前, 2列目=コード（ヘッダー行可）</span>
+            </form>
+            @error('file')
+                <x-validation-error :messages="$message" />
+            @enderror
+        </x-card>
+    @endcan
+
     <div class="mb-4"><x-search-box placeholder="名前・コードで検索" /></div>
 
     @if ($members->isEmpty())

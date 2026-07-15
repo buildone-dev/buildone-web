@@ -9,9 +9,11 @@ use App\Core\Authorization\Permission;
 use App\Features\Entry\Http\Requests\StoreMemberRequest;
 use App\Features\Entry\Http\Requests\UpdateMemberRequest;
 use App\Features\Entry\Models\Member;
+use App\Features\Entry\Support\MemberCsvImporter;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 final class MemberController extends Controller
@@ -59,6 +61,21 @@ final class MemberController extends Controller
         $this->audit->log('member.updated', $member, ['code' => $member->code]);
 
         return redirect()->route('entry.members.index')->with('status', '利用者を更新しました。');
+    }
+
+    public function import(Request $request, MemberCsvImporter $importer): RedirectResponse
+    {
+        Gate::authorize(Permission::EntryManage->value);
+
+        $request->validate([
+            'file' => ['required', 'file', 'mimes:csv,txt', 'max:2048'],
+        ]);
+
+        $result = $importer->import($request->file('file')->getRealPath());
+        $this->audit->log('member.imported', null, $result);
+
+        return redirect()->route('entry.members.index')
+            ->with('status', "{$result['created']}件を取り込みました（スキップ {$result['skipped']}件）。");
     }
 
     public function toggle(Member $member): RedirectResponse
