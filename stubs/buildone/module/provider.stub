@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace __NAMESPACE__;
 
-use __NAMESPACE__\Domain\Contracts\__MODULE__Repository;
-use __NAMESPACE__\Infrastructure\Repositories\Eloquent__MODULE__Repository;
 use App\Infrastructure\Modules\ModuleServiceProvider;
 
 final class __MODULE__ServiceProvider extends ModuleServiceProvider
@@ -15,8 +13,6 @@ final class __MODULE__ServiceProvider extends ModuleServiceProvider
         return '__MODULE_LOWER__';
     }
 
-    protected function bindings(): void
-    {
-        $this->app->bind(__MODULE__Repository::class, Eloquent__MODULE__Repository::class);
-    }
+    // 永続化の差し替えや複雑な境界が必要になったら bindings() で
+    // Repository 契約 → 実装 を束ねる（App\Domain\Contracts\Repository を参照）。
 }

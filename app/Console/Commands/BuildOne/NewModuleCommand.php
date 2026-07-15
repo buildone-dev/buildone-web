@@ -16,11 +16,16 @@ use Illuminate\Support\Str;
  */
 final class NewModuleCommand extends Command
 {
-    protected $signature = 'buildone:new-module
+    protected $signature = 'buildone:make-module
         {name : モジュール名（StudlyCase 例: Task）}
         {--group=Features : 配置グループ（Core または Features）}';
 
-    protected $description = 'BuildOne モジュール（Presentation/Application/Domain/Infrastructure の縦割り）を生成する';
+    /**
+     * @var array<int, string>
+     */
+    protected $aliases = ['buildone:new-module'];
+
+    protected $description = 'BuildOne モジュール（Laravel標準寄りの Feature First 構成）を生成する';
 
     public function handle(Filesystem $files): int
     {
@@ -57,15 +62,12 @@ final class NewModuleCommand extends Command
         /** @var array<string, string> $map スタブ名 => モジュール内の出力先 */
         $map = [
             'provider.stub' => "{$name}ServiceProvider.php",
-            'model.stub' => "Domain/{$name}.php",
-            'contract.stub' => "Domain/Contracts/{$name}Repository.php",
-            'repository.stub' => "Infrastructure/Repositories/Eloquent{$name}Repository.php",
-            'factory.stub' => "Infrastructure/Database/Factories/{$name}Factory.php",
-            'migration.stub' => "Infrastructure/Database/Migrations/{$timestamp}_create_{$table}_table.php",
-            'service.stub' => "Application/Services/{$name}Service.php",
-            'controller.stub' => "Presentation/Http/Controllers/{$name}Controller.php",
-            'routes.stub' => 'Presentation/Routes/web.php',
-            'view.stub' => 'Presentation/Views/index.blade.php',
+            'model.stub' => "Models/{$name}.php",
+            'factory.stub' => "Database/Factories/{$name}Factory.php",
+            'migration.stub' => "Database/Migrations/{$timestamp}_create_{$table}_table.php",
+            'controller.stub' => "Http/Controllers/{$name}Controller.php",
+            'routes.stub' => 'Routes/web.php',
+            'view.stub' => 'Views/index.blade.php',
             'test.stub' => "Tests/{$name}Test.php",
         ];
 

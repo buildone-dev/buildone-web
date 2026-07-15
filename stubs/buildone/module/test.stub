@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use __NAMESPACE__\Domain\__MODULE__;
+use __NAMESPACE__\Models\__MODULE__;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

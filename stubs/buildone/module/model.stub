@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace __NAMESPACE__\Domain;
+namespace __NAMESPACE__\Models;
 
-use __NAMESPACE__\Infrastructure\Database\Factories\__MODULE__Factory;
+use __NAMESPACE__\Database\Factories\__MODULE__Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Features\Task;
 
-use App\Features\Task\Domain\Contracts\TaskRepository;
-use App\Features\Task\Infrastructure\Repositories\EloquentTaskRepository;
 use App\Infrastructure\Modules\ModuleServiceProvider;
 
 final class TaskServiceProvider extends ModuleServiceProvider
@@ -15,8 +13,6 @@ final class TaskServiceProvider extends ModuleServiceProvider
         return 'task';
     }
 
-    protected function bindings(): void
-    {
-        $this->app->bind(TaskRepository::class, EloquentTaskRepository::class);
-    }
+    // 永続化の差し替えや複雑な境界が必要になったら bindings() で
+    // Repository 契約 → 実装 を束ねる（App\Domain\Contracts\Repository を参照）。
 }

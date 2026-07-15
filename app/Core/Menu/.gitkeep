@@ -1,0 +1,3 @@
+# Core/Menu
+
+BuildOne Framework の共通基盤（Menu）。業務固有処理は置かない。M3以降で実装。

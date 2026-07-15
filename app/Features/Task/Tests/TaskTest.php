@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Features\Task\Domain\Task;
+use App\Features\Task\Models\Task;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 

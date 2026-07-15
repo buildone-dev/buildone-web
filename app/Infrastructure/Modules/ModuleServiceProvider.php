@@ -10,12 +10,13 @@ use ReflectionClass;
 /**
  * BuildOne の全モジュール（Core / Features）が継承する基底プロバイダ。
  *
- * モジュールのディレクトリ（Feature First の縦割りスライス）を規約に従って自動配線する:
- *   - Infrastructure/Database/Migrations  → マイグレーション
- *   - Presentation/Views                  → ビュー（名前空間 = モジュール名）
- *   - Presentation/Routes/web.php         → Web ルート
+ * モジュールのディレクトリ（Laravel標準寄りの Feature First 構成）を規約に従って自動配線する:
+ *   - Database/Migrations  → マイグレーション
+ *   - Views                → ビュー（名前空間 = モジュール名）
+ *   - Routes/web.php        → Web ルート
  *
  * サブクラスは name() と、必要なら bindings() / registerModule() のみ実装する。
+ * Repository / DTO / Service は「必要な機能でだけ」使う（強制しない）。
  */
 abstract class ModuleServiceProvider extends ServiceProvider
 {
@@ -33,17 +34,17 @@ abstract class ModuleServiceProvider extends ServiceProvider
     {
         $path = $this->modulePath();
 
-        $migrations = $path.'/Infrastructure/Database/Migrations';
+        $migrations = $path.'/Database/Migrations';
         if (is_dir($migrations)) {
             $this->loadMigrationsFrom($migrations);
         }
 
-        $views = $path.'/Presentation/Views';
+        $views = $path.'/Views';
         if (is_dir($views)) {
             $this->loadViewsFrom($views, $this->name());
         }
 
-        $routes = $path.'/Presentation/Routes/web.php';
+        $routes = $path.'/Routes/web.php';
         if (is_file($routes)) {
             $this->loadRoutesFrom($routes);
         }
