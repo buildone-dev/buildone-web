@@ -25,6 +25,18 @@ composer dump-autoload && php artisan migrate
 
 品質ゲート: `composer ci`（Pint → PHPStan level 6 → Pest）。CI は `.github/workflows/ci.yml`。
 
+### 管理画面（初期セットアップ）
+
+認証・ロール権限・ユーザー管理・監査ログ・ダッシュボードを備えた管理画面（`/admin`）がある。
+
+```bash
+php artisan migrate
+php artisan db:seed --class='Database\Seeders\RoleSeeder'   # 既定ロール(super_admin/admin/viewer)
+php artisan buildone:make-admin admin@example.com --name="運営者"   # 初期管理者。パスワードは一度だけ表示
+```
+
+`/login` からログイン。**Seeder に本番用の固定パスワードは置かず**、初期管理者は上記コマンドで作成する（パスワードはランダム生成・一度だけ表示）。権限は `App\Core\Authorization\Permission` で一元管理。
+
 ## 技術構成
 
 | 項目 | 内容 |

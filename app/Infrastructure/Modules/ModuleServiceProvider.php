@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Modules;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use ReflectionClass;
 
@@ -46,7 +47,7 @@ abstract class ModuleServiceProvider extends ServiceProvider
 
         $routes = $path.'/Routes/web.php';
         if (is_file($routes)) {
-            $this->loadRoutesFrom($routes);
+            Route::middleware('web')->group($routes);
         }
 
         $this->registerModule();
