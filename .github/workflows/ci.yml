@@ -21,6 +21,10 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress
 
+      - name: Security audit (Composer)
+        run: composer audit --no-interaction
+        continue-on-error: true
+
       - name: Prepare environment
         run: |
           cp .env.example .env
@@ -37,6 +41,10 @@ jobs:
         with:
           node-version: '20'
           cache: npm
+
+      - name: Security audit (npm)
+        run: npm audit --audit-level=high
+        continue-on-error: true
 
       - name: Build assets
         run: |

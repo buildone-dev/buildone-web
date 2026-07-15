@@ -85,6 +85,7 @@
                             <li><a href="{{ setting('youtube_url', config('buildone.youtube.url')) }}" rel="noopener" target="_blank" class="transition hover:text-white">YouTube</a></li>
                         @endif
                         <li><a href="{{ route('privacy') }}" class="transition hover:text-white">プライバシーポリシー</a></li>
+                        <li><a href="{{ route('terms') }}" class="transition hover:text-white">利用規約</a></li>
                         <li><a href="{{ route('home') }}#contact" class="transition hover:text-white">お問い合わせ</a></li>
                     </ul>
                 </nav>
