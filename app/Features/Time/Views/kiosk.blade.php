@@ -28,6 +28,18 @@
             @error('code')
                 <x-validation-error :messages="$message" />
             @enderror
+
+            {{-- カメラでQR読み取り（対応端末のみ・BarcodeDetector API） --}}
+            <div id="qr-scanner" data-input="code" class="mt-5 border-t border-slate-100 pt-4">
+                <div class="flex items-center gap-3">
+                    <x-button type="button" id="qr-start" variant="secondary" size="sm">📷 カメラで読み取る</x-button>
+                    <p id="qr-status" class="text-xs text-slate-400"></p>
+                </div>
+                <div id="qr-cam" class="mt-3 hidden">
+                    <video id="qr-video" class="w-full max-w-xs rounded-xl border border-slate-200 bg-black" muted playsinline></video>
+                    <p class="mt-1 text-xs text-slate-400">QRコードを枠に収めてください。読み取ると自動で打刻します。</p>
+                </div>
+            </div>
         </x-card>
 
         <x-stat-card label="現在の出勤者" :value="$workingCount" />
