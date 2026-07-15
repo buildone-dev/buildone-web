@@ -26,6 +26,8 @@ return [
     'contact' => [
         'url' => env('CONTACT_URL') ?: null,
         'email' => env('CONTACT_EMAIL') ?: null,
+        // 問い合わせ受信時の通知先（設定されていればメール通知する）
+        'notify_email' => env('CONTACT_NOTIFY_EMAIL') ?: null,
     ],
 
     // 開発システム一覧（カードは配列を足すだけで増える）

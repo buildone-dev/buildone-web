@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Features\Contact\Http\Controllers;
 
 use App\Features\Contact\Http\Requests\StoreInquiryRequest;
+use App\Features\Contact\Mail\InquiryReceived;
 use App\Features\Contact\Models\Inquiry;
 use App\Features\Contact\Services\PromptGenerator;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Mail;
+use Throwable;
 
 final class ContactController extends Controller
 {
@@ -37,6 +40,16 @@ final class ContactController extends Controller
 
         // 依頼内容から開発着手プロンプトを生成しておく（管理者がすぐ着手できるように）
         $inquiry->update(['generated_prompt' => $generator->forInquiry($inquiry)]);
+
+        // 通知先が設定されていればメール通知（失敗しても送信自体は成功扱い）
+        $notify = config('buildone.contact.notify_email');
+        if (is_string($notify) && $notify !== '') {
+            try {
+                Mail::to($notify)->send(new InquiryReceived($inquiry));
+            } catch (Throwable $e) {
+                report($e);
+            }
+        }
 
         return redirect()->route('contact.show')->with('inquiry_sent', true);
     }

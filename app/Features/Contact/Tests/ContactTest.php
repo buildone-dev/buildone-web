@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use App\Core\Authorization\Permission;
+use App\Features\Contact\Mail\InquiryReceived;
 use App\Features\Contact\Models\Inquiry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 use function Pest\Laravel\actingAs;
@@ -55,6 +57,26 @@ it('正しく入力すると問い合わせが保存され完了表示になる'
         ->assertSessionHas('inquiry_sent', true);
 
     expect(Inquiry::query()->where('email', 'taro@example.com')->exists())->toBeTrue();
+});
+
+it('通知先が設定されていれば問い合わせ受信メールを送る', function (): void {
+    Mail::fake();
+    config(['buildone.contact.notify_email' => 'info@buildone.sakura.ne.jp']);
+
+    post('/contact', validInquiry());
+
+    Mail::assertSent(InquiryReceived::class, function ($mail) {
+        return $mail->hasTo('info@buildone.sakura.ne.jp');
+    });
+});
+
+it('通知先が未設定ならメールは送らない', function (): void {
+    Mail::fake();
+    config(['buildone.contact.notify_email' => null]);
+
+    post('/contact', validInquiry());
+
+    Mail::assertNothingSent();
 });
 
 it('問い合わせから開発着手プロンプトが生成される', function (): void {
