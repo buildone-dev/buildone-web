@@ -91,6 +91,9 @@
                 </nav>
             </div>
             <p class="mt-10 border-t border-slate-700/60 pt-6 text-xs text-slate-400">
+                運営：{{ config('buildone.company.name') }}｜〒{{ config('buildone.company.postal_code') }} {{ config('buildone.company.address') }}
+            </p>
+            <p class="mt-1 text-xs text-slate-400">
                 &copy; {{ date('Y') }} BuildOne. All rights reserved.
             </p>
         </div>

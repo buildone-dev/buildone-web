@@ -13,6 +13,15 @@ return [
     'tagline' => '社長、そのシステム作れます。',
     'subcopy' => 'AIで会社の業務システムを1週間で開発・公開。',
 
+    // 運営会社情報（フッター・利用規約・プライバシーポリシーで使用）
+    'company' => [
+        'name' => '株式会社Rezon',
+        'representative' => '村田喜明',
+        'postal_code' => '150-0041',
+        'address' => '東京都渋谷区神南1丁目23-10 3階',
+        'phone' => '080-3250-1735',
+    ],
+
     'youtube' => [
         'channel_name' => 'BuildOne | 社長、そのシステム作れます。',
         'handle' => '@buildonejp',

@@ -60,7 +60,15 @@
                 </section>
 
                 <section>
-                    <h2 class="text-xl font-bold text-ink">7. お問い合わせ</h2>
+                    <h2 class="text-xl font-bold text-ink">7. 個人情報取扱事業者</h2>
+                    <p class="mt-3">
+                        {{ config('buildone.company.name') }}（代表：{{ config('buildone.company.representative') }}）<br>
+                        〒{{ config('buildone.company.postal_code') }} {{ config('buildone.company.address') }}
+                    </p>
+                </section>
+
+                <section>
+                    <h2 class="text-xl font-bold text-ink">8. お問い合わせ</h2>
                     <p class="mt-3">
                         本ポリシーに関するお問い合わせは、<a href="{{ route('home') }}#contact" class="font-medium text-brand underline underline-offset-2 hover:text-brand-dark">お問い合わせ窓口</a>までお願いいたします。
                     </p>

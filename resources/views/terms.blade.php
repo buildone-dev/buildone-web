@@ -43,7 +43,7 @@
                 </section>
                 <section>
                     <h2 class="text-xl font-bold text-ink">第7条（運営者・お問い合わせ）</h2>
-                    <p class="mt-3">運営者：BuildOne（正式名称・所在地は追って記載）<br>本規約に関するお問い合わせは<a href="{{ route('contact.show') }}" class="font-medium text-brand underline underline-offset-2 hover:text-brand-dark">お問い合わせフォーム</a>までお願いいたします。</p>
+                    <p class="mt-3">運営者：{{ config('buildone.company.name') }}（代表：{{ config('buildone.company.representative') }}）<br>所在地：〒{{ config('buildone.company.postal_code') }} {{ config('buildone.company.address') }}<br>本規約に関するお問い合わせは<a href="{{ route('contact.show') }}" class="font-medium text-brand underline underline-offset-2 hover:text-brand-dark">お問い合わせフォーム</a>までお願いいたします。</p>
                 </section>
             </div>
         </div>
