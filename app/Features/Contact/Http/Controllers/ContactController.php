@@ -7,6 +7,7 @@ namespace App\Features\Contact\Http\Controllers;
 use App\Features\Contact\Http\Requests\StoreInquiryRequest;
 use App\Features\Contact\Mail\InquiryReceived;
 use App\Features\Contact\Models\Inquiry;
+use App\Features\Contact\Services\LineNotifier;
 use App\Features\Contact\Services\PromptGenerator;
 use App\Http\Controllers\Controller;
 use Illuminate\Contracts\View\View;
@@ -21,7 +22,7 @@ final class ContactController extends Controller
         return view('contact::form');
     }
 
-    public function store(StoreInquiryRequest $request, PromptGenerator $generator): RedirectResponse
+    public function store(StoreInquiryRequest $request, PromptGenerator $generator, LineNotifier $lineNotifier): RedirectResponse
     {
         $data = $request->safe()->only([
             'company', 'contact_name', 'email', 'phone', 'current_task', 'improvement',
@@ -49,6 +50,13 @@ final class ContactController extends Controller
             } catch (Throwable $e) {
                 report($e);
             }
+        }
+
+        // LINE通知先が設定されていればプッシュ通知（未設定なら内部でスキップ）
+        try {
+            $lineNotifier->notify($inquiry);
+        } catch (Throwable $e) {
+            report($e);
         }
 
         return redirect()->route('contact.show')->with('inquiry_sent', true);

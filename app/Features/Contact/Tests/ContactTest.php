@@ -6,6 +6,8 @@ use App\Core\Authorization\Permission;
 use App\Features\Contact\Mail\InquiryReceived;
 use App\Features\Contact\Models\Inquiry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
@@ -77,6 +79,28 @@ it('通知先が未設定ならメールは送らない', function (): void {
     post('/contact', validInquiry());
 
     Mail::assertNothingSent();
+});
+
+it('LINE通知先が設定されていればLINE Messaging APIへpushする', function (): void {
+    Http::fake(['https://api.line.me/*' => Http::response(['message' => 'ok'], 200)]);
+    config(['services.line.channel_access_token' => 'test-token', 'services.line.notify_to' => 'test-user-id']);
+
+    post('/contact', validInquiry());
+
+    Http::assertSent(function (Request $request) {
+        return $request->url() === 'https://api.line.me/v2/bot/message/push'
+            && $request->hasHeader('Authorization', 'Bearer test-token')
+            && $request['to'] === 'test-user-id';
+    });
+});
+
+it('LINE通知先が未設定ならLINE Messaging APIへ送らない', function (): void {
+    Http::fake();
+    config(['services.line.channel_access_token' => null, 'services.line.notify_to' => null]);
+
+    post('/contact', validInquiry());
+
+    Http::assertNothingSent();
 });
 
 it('問い合わせから開発着手プロンプトが生成される', function (): void {

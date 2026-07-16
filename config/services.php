@@ -55,4 +55,10 @@ return [
         'providers' => env('AI_PROVIDERS', 'openai,gemini,anthropic'),
     ],
 
+    // LINE Messaging API（問い合わせ受信通知）。どちらか未設定なら送信をスキップする
+    'line' => [
+        'channel_access_token' => env('LINE_CHANNEL_ACCESS_TOKEN'),
+        'notify_to' => env('LINE_NOTIFY_TO'),
+    ],
+
 ];
