@@ -54,6 +54,9 @@ final class DoctorCommand extends Command
 
         $checks[] = ['label' => 'AIプロバイダのキー設定', 'ok' => $this->anyAiKey(), 'note' => (string) config('services.ai.providers')];
 
+        $sentryConfigured = is_string(config('sentry.dsn')) && config('sentry.dsn') !== '';
+        $checks[] = ['label' => 'Sentry設定（任意）', 'ok' => true, 'note' => $sentryConfigured ? '設定済み' : '未設定（エラー監視なし）'];
+
         $failures = 0;
         foreach ($checks as $check) {
             $mark = $check['ok'] ? '<fg=green>  OK  </>' : '<fg=red;options=bold> NG   </>';
